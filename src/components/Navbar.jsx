@@ -1,5 +1,15 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
+
+import { auth } from '../firebase/firebaseConfig';
+import { signOut } from 'firebase/auth';
+
+let logOut = () => {
+  signOut(auth).then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
+}
 
 function Navbar() {
   return (
@@ -12,7 +22,7 @@ function Navbar() {
             </Link>
           </div>
           <div className="navbar-end">
-            <button className='btn btn-error text-white'>Log Out</button>
+            <button onClick={logOut} className='btn btn-error text-white'>Log Out</button>
           </div>
         </nav>
       </div>
