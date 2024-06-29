@@ -10,9 +10,15 @@ let userSlice = createSlice({
     name: `user`,
     initialState,
     reducers: {
-        login: () => { },
-        logout: () => { },
-        isAuthChange: () => { },
+        login: (state, { payload }) => {
+            state.user = payload
+        },
+        logout: () => {
+            state.user = null
+        },
+        isAuthChange: (state) => {
+            state.isAuthReady = true;
+        },
     },
 })
 
