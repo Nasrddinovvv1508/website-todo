@@ -12,7 +12,7 @@ let useLogin = () => {
 
     let dispatch = useDispatch();
 
-    let signInWithEmail = async (email, password) => {
+    let signInWithEmail = async ({ email, password }) => {
         setIsPending(true);
         try {
             let userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -24,7 +24,7 @@ let useLogin = () => {
         } catch (error) {
             const errorMessage = error.message;
             toast.error(errorMessage)
-            console.log(errorMessage);
+            console.log(error);
             setIsPending(false);
         }
     }

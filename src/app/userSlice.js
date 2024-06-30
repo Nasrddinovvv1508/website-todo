@@ -13,7 +13,7 @@ let userSlice = createSlice({
         login: (state, { payload }) => {
             state.user = payload
         },
-        logout: () => {
+        logout: (state, { payload }) => {
             state.user = null
         },
         isAuthChange: (state) => {

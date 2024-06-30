@@ -12,6 +12,7 @@ let useRegister = () => {
 
 
     let registerWithEmail = async (email, password, displayName, photoURL) => {
+        console.log(email, password, displayName, photoURL);
         setIsPending(true);
         try {
             let userCredential = await createUserWithEmailAndPassword(auth, email, password)
@@ -28,6 +29,7 @@ let useRegister = () => {
         } catch (error) {
             const errorMessage = error.message;
             toast.error(errorMessage)
+            console.log(error);
             setIsPending(false);
         }
     }
