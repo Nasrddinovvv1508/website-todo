@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { db } from '../firebase/firebaseConfig'
 
 export let useCollection = (collectionName) => {
-    let [data, setData] = useState(null);
+    let [data, setData] = useState([]);
 
     useEffect(() => {
         let getData = async () => {
@@ -13,10 +13,10 @@ export let useCollection = (collectionName) => {
 
             let data = [];
             querySnapshot.docs.forEach((doc) => {
-                data.push({ id: doc.id, ...doc.data() });
+                setData(prevData => [...prevData, { id: doc.id, ...doc.data() }]);
             })
 
-            setData(data);
+            // setData(data);
         }
 
         getData();

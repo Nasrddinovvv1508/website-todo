@@ -7,3 +7,40 @@
         @apply max-w-6xl w-full mx-auto px-4
     }
 }
+
+body {
+    background-color: #e3e9ff;
+}
+
+.todo-trash {
+    display: none;
+}
+
+.todo-list:hover {
+    .todo-trash {
+        display: block;
+    }
+}
+
+input[type="checkbox"] {
+    visibility: hidden;
+    position: absolute;
+}
+
+input[type="checkbox"]+label:before {
+    height: 12px;
+    width: 12px;
+    margin-right: 2px;
+    content: " ";
+    display: inline-block;
+    vertical-align: baseline;
+    border: 1px solid #777;
+}
+
+input[type="checkbox"]:checked+label:before {
+    background-color: black;
+}
+
+input[type="checkbox"]+label:before {
+    border-radius: 50%;
+}
