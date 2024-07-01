@@ -12,14 +12,13 @@ let useRegister = () => {
 
 
     let registerWithEmail = async (email, password, displayName, photoURL) => {
-        console.log(email, password, displayName, photoURL);
+        console.log(email, password, displayName);
         setIsPending(true);
         try {
             let userCredential = await createUserWithEmailAndPassword(auth, email, password)
 
             await updateProfile(auth.currentUser, {
                 displayName,
-                photoURL,
             })
 
             const user = userCredential.user;
