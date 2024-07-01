@@ -11,7 +11,7 @@ let useRegister = () => {
     let [isPending, setIsPending] = useState(false);
 
 
-    let registerWithEmail = async (email, password, displayName, photoURL) => {
+    let registerWithEmail = async ({ email, password, displayName, photoURL }) => {
         console.log(email, password, displayName);
         setIsPending(true);
         try {
