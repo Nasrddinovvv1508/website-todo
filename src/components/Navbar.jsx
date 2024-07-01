@@ -32,31 +32,6 @@ function Navbar() {
   }
 
   return (
-    // <header className='bg-base-300'>
-    //   <div className='align-elements'>
-    //     <nav className='navbar'>
-    //       <div className="navbar-start">
-    //         <Link to='/'>
-    //           <h1 className='text-4xl font-bold'>Logo</h1>
-    //         </Link>
-    //       </div>
-    //       <div className="navbar-end flex gap-2">
-    //         <div className='flex items-center gap-5 mr-4'>
-    //           <h3 className=''>{user.displayName}</h3>
-
-    //           <div className="avatar">
-    //             <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
-    //               <img src={`https://api.dicebear.com/9.x/initials/svg?seed=${user.displayName}`} alt="user img" />
-    //             </div>
-    //           </div>
-    //         </div>
-
-    //         <button onClick={logOut} className='btn btn-error text-white'>Log Out</button>
-    //       </div>
-    //     </nav>
-    //   </div>
-
-    // </header>
     <header className="navbar text-white p-5 shadow-lg bg-[#af7eeb] ">
       <div className="navbar-start">
         <div className="dropdown">
