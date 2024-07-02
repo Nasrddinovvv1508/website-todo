@@ -11,9 +11,10 @@ import { Home, Login, Register } from './pages'
 // layout
 import MainLayout from './layout/MainLayout'
 
-// loaderds
+// actions
 import { action as LoginAction } from './pages/Login'
 import { action as RegisterAction } from './pages/Register'
+import { action as HomeAction } from './pages/Home'
 
 // components
 import { ProtectedRoutes } from "./components"
@@ -44,7 +45,8 @@ function App() {
       children: [
         {
           index: true,
-          element: <Home />
+          element: <Home />,
+          action: HomeAction,
         }
       ]
     },
