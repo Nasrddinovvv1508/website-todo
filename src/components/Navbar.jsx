@@ -61,12 +61,13 @@ function Navbar() {
               <h1 className='text-[#636262] text-xl hover:bg-white cursor-default font-semibold'>{user && user.displayName}</h1>
             </li>
             <li><Link to="/" className='text-base font-semibold text-white bg-[#4c87ed] hover:bg-[#1961dc]'>Homepage</Link></li>
+            <li><Link to="/profile" className='text-base font-semibold text-white bg-[#da4ced] hover:bg-[#6b0e7b]'>Update Profile</Link></li>
             <li><button onClick={logOut} className='text-[#343434] bg-[#af2929] hover:bg-[#8b1414] text-base font-semibold'>Log out</button></li>
           </ul>
         </div>
       </div>
       <div className="navbar-center">
-        <a style={{ letterSpacing: `2px` }} className="btn btn-ghost text-3xl font-bold">Website Todo</a>
+        <Link to={`/`} style={{ letterSpacing: `2px` }} className="btn btn-ghost text-3xl font-bold">Website Todo</Link>
       </div>
       <div className="navbar-end">
 

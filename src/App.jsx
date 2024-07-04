@@ -6,7 +6,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
 // pages
-import { Home, Login, Register } from './pages'
+import { Home, Login, Register, Profile } from './pages'
 
 // layout
 import MainLayout from './layout/MainLayout'
@@ -15,6 +15,7 @@ import MainLayout from './layout/MainLayout'
 import { action as LoginAction } from './pages/Login'
 import { action as RegisterAction } from './pages/Register'
 import { action as HomeAction } from './pages/Home'
+import { action as ProfileAction } from "./pages/Profile"
 
 // components
 import { ProtectedRoutes } from "./components"
@@ -47,6 +48,11 @@ function App() {
           index: true,
           element: <Home />,
           action: HomeAction,
+        },
+        {
+          path: `/profile`,
+          element: <Profile />,
+          action: ProfileAction,
         }
       ]
     },
