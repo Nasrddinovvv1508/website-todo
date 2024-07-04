@@ -16,8 +16,7 @@ import { logout } from '../app/userSlice';
 function Navbar() {
   let dispatch = useDispatch();
 
-  let { user } = useSelector((state) => state.user)
-  console.log(user);
+  let { user } = useSelector((state) => state.user);
 
   let logOut = () => {
     if (confirm(`Are You sure???`)) {

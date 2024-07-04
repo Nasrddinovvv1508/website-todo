@@ -3,6 +3,7 @@ import { Form, Link, useActionData } from "react-router-dom";
 
 // hooks
 import { useCollection } from "../hooks/useCollection"
+import { useFirestore } from "../hooks/useFirestore";
 
 // redux
 import { useSelector } from "react-redux";
@@ -13,30 +14,26 @@ import FormInput from '../components/FormInput'
 // react
 import { useEffect, useRef, useState } from "react";
 
-// firebase
-import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
-
 // toast
 import toast from "react-hot-toast";
 
 // icons
 import { FaPlus } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
+import TodoList from "../components/TodoList";
 
 export let action = async ({ request }) => {
   let formData = await request.formData();
   let title = formData.get(`title`);
 
-  // hidden.current.classList.add(`hidden`);
-
   return { title }
 }
 
 function Home() {
+  let { addNewDoc } = useFirestore()
+
   // data
   let { user } = useSelector((state) => state.user)
-  let { data } = useCollection("todos", ['uid', `==`, user.uid])
+  let { data } = useCollection("todos", ['uid', `==`, user.uid], ['createdAt']);
   let userData = useActionData();
 
   // hooks
@@ -51,8 +48,9 @@ function Home() {
         setError(false);
         toast.error(`Invalid value`)
       } else {
-        let newDoc = ({ ...userData, uid: user.uid });
-        addDoc(collection(db, "todos"), newDoc);
+        let newDoc = ({ ...userData, uid: user.uid, });
+
+        addNewDoc(newDoc);
         setError(true);
         inputRef.current.value = ``;
       }
@@ -60,31 +58,13 @@ function Home() {
   }, [userData])
 
   //  functions
-  let deleteDocument = (id) => {
-    deleteDoc(doc(db, "todos", id));
-  }
 
   return (
     <>
       <div className="flex justify-center items-center h-screen">
         <div className="max-w-[650px] w-full -mt-[100px] bg-white shadow-2xl">
-          <ul className="w-10/12 my-[20px] flex flex-col gap-5 mx-auto py-[70px] px-[50px]">
-            {data && !data.length > 0 ? `Loading...` : data.map((obj) => {
-              return (
-                <li key={obj.id} className="todo-list text-[#9ca3c3] py-3 flex items-center justify-between px-3">
-                  <div>
-                    <p className="flex items-center gap-6">
-                      <input type="checkbox" className="checkbox mr-2" id="01" />
-                      <label style={{ letterSpacing: `1px` }} htmlFor="01" className="no-select text-3xl font-semibold -mt-1 block">{obj.title} </label>
-                    </p>
-                  </div>
-                  <div className="todo-trash mr-2">
-                    <FaTrashAlt onClick={() => deleteDocument(obj.id)} className="cursor-pointer" size={30} />
-                  </div>
-                </li>
-              )
-            })}
-
+          <ul className="w-10/12 my-[20px] flex flex-col gap-5 mx-auto py-[70px] px-[40px]">
+            {data && <TodoList data={data} />}
             <div className="flex justify-center">
               <button onClick={() => {
                 hidden.current.classList.remove(`hidden`);

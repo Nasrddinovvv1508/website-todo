@@ -18,31 +18,8 @@ body {
 
 .todo-list:hover {
     .todo-trash {
-        display: block;
+        display: flex;
     }
-}
-
-input[type="checkbox"] {
-    visibility: hidden;
-    position: absolute;
-}
-
-input[type="checkbox"]+label:before {
-    height: 13px;
-    width: 13px;
-    margin-right: 15px;
-    content: "";
-    display: inline-block;
-    vertical-align: baseline;
-    border: 1px solid #777;
-}
-
-input[type="checkbox"]:checked+label:before {
-    background-color: #af7eeb;
-}
-
-input[type="checkbox"]+label:before {
-    border-radius: 50%;
 }
 
 .no-select {
@@ -64,4 +41,9 @@ input[type="checkbox"]+label:before {
     width: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+}
+
+.complated {
+    opacity: 50%;
+    text-decoration: line-through;
 }

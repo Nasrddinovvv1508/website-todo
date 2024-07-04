@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, useActionData } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { FormInput } from "../components";
 import toast from "react-hot-toast";
 import { updateEmail, sendEmailVerification } from "firebase/auth"; // Firebase'dan sendEmailVerification qo'shamiz
+import { UpdateProfile } from "../app/userSlice";
 
 export let action = async ({ request }) => {
   let formData = await request.formData();
@@ -21,12 +22,16 @@ function Profile() {
   const [info, setInfo] = useState(false);
   const [emailInfo, setEmailInfo] = useState(false);
 
+  let dispatch = useDispatch();
+
   useEffect(() => {
     if (userData && userData.displayName && auth.currentUser) {
       updateProfile(auth.currentUser, {
         displayName: userData.displayName,
+        uid: user.uid,
       }).then(() => {
         toast.success("Name successfully changed");
+        dispatch(UpdateProfile(userData)); // Bu yerda userData dispatch qilinmoqda
         setInfo(!info);
       }).catch((error) => {
         toast.error(`Failed to update profile: ${error.message}`);
@@ -34,9 +39,7 @@ function Profile() {
     }
 
     if (userData?.email && auth?.currentUser) {
-      // Email manzilini o'zgartirish va tasdiqlash
       updateEmail(auth.currentUser, userData.email).then(() => {
-        // Emailni tasdiqlash xabari
         sendEmailVerification(auth.currentUser)
           .then(() => {
             toast.success(`Email successfully changed. Please verify your new email.`);
@@ -51,6 +54,7 @@ function Profile() {
         console.error(error);
       });
     }
+
   }, [userData]);
 
   if (!user) {

@@ -27,7 +27,7 @@ import { useEffect } from "react"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./firebase/firebaseConfig"
 
-import { isAuthChange, login } from "./app/userSlice"
+import { isAuthChange, login, UpdateProfile } from "./app/userSlice"
 
 
 function App() {
@@ -70,7 +70,9 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      dispatch(login(user))
+      if (user?.displayName) {
+        dispatch(login(user));
+      }
       dispatch(isAuthChange())
     })
   }, [])

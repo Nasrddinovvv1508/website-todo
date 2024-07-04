@@ -5,22 +5,24 @@ let initialState = {
     isAuthReady: false,
 };
 
-
 let userSlice = createSlice({
-    name: `user`,
+    name: 'user',
     initialState,
     reducers: {
         login: (state, { payload }) => {
-            state.user = payload
+            state.user = payload;
         },
-        logout: (state, { payload }) => {
-            state.user = null
+        logout: (state) => {
+            state.user = null;
         },
         isAuthChange: (state) => {
             state.isAuthReady = true;
         },
+        UpdateProfile: (state, { payload }) => {
+            state.user = { ...state.user, ...payload }; // user obyektini yangilash
+        },
     },
-})
+});
 
-export let { login, logout, isAuthChange } = userSlice.actions
-export default userSlice.reducer
+export let { login, logout, isAuthChange, UpdateProfile } = userSlice.actions;
+export default userSlice.reducer;
