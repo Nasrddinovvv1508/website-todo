@@ -7,6 +7,7 @@ import { FormInput } from "../components";
 import { useRegister } from '../hooks/useRegister';
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // functions
 export let action = async ({ request }) => {
@@ -22,6 +23,12 @@ export let action = async ({ request }) => {
 function Register() {
   let userData = useActionData();
   let { registerWithEmail, isPending } = useRegister();
+
+  let [type, setType] = useState(false)
+
+  let handleChangeType = () => {
+    setType(!type)
+  }
 
   let [errors, setErrors] = useState({
     displayName: ``,
@@ -71,7 +78,13 @@ function Register() {
           </div>
           <FormInput type="text" name="displayName" placeholder="Name" status={errors.displayName} />
           <FormInput type="email" name="email" placeholder="Email" status={errors.email} />
-          <FormInput type="password" name="password" placeholder="Password" status={errors.password} />
+
+          <div className="w-full flex items-end gap-2">
+            <FormInput status={errors.password} type={type ? `text` : `password`} name="password" placeholder="Password" />
+            <button type="button" onClick={handleChangeType} className="btn btn-secondary">
+              {type ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+            </button>
+          </div>
 
           {!isPending && <button className="btn btn-primary btn-wide">Register</button>}
           {isPending && <button disabled className="btn btn-primary btn-wide">Loading...</button>}

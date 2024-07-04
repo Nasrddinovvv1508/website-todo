@@ -5,7 +5,7 @@ import { auth } from "../firebase/firebaseConfig";
 import { useState, useEffect } from "react";
 import { FormInput } from "../components";
 import toast from "react-hot-toast";
-import { updateEmail, sendEmailVerification } from "firebase/auth"; // Firebase'dan sendEmailVerification qo'shamiz
+import { updateEmail, sendEmailVerification } from "firebase/auth";
 import { UpdateProfile } from "../app/userSlice";
 
 export let action = async ({ request }) => {
@@ -21,40 +21,50 @@ function Profile() {
   const userData = useActionData();
   const [info, setInfo] = useState(false);
   const [emailInfo, setEmailInfo] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   let dispatch = useDispatch();
 
   useEffect(() => {
-    if (userData && userData.displayName && auth.currentUser) {
-      updateProfile(auth.currentUser, {
-        displayName: userData.displayName,
-        uid: user.uid,
-      }).then(() => {
-        toast.success("Name successfully changed");
-        dispatch(UpdateProfile(userData)); // Bu yerda userData dispatch qilinmoqda
-        setInfo(!info);
-      }).catch((error) => {
-        toast.error(`Failed to update profile: ${error.message}`);
-      });
-    }
+    const updateProfileInfo = async () => {
+      if (userData && userData.displayName && auth.currentUser) {
+        // if (!userData.email) {
+        //   userData.email = user.email;
+        // }
 
-    if (userData?.email && auth?.currentUser) {
-      updateEmail(auth.currentUser, userData.email).then(() => {
-        sendEmailVerification(auth.currentUser)
-          .then(() => {
-            toast.success(`Email successfully changed. Please verify your new email.`);
-            setEmailInfo(!emailInfo);
-          })
-          .catch((error) => {
-            toast.error(`Error sending email verification: ${error.message}`);
-            console.error(error);
+        try {
+          await updateProfile(auth.currentUser, {
+            displayName: userData.displayName,
           });
-      }).catch((error) => {
-        toast.error(`Error updating email: ${error.message}`);
-        console.error(error);
-      });
-    }
+          toast.success("Name successfully changed");
+          dispatch(UpdateProfile({ ...user, displayName: userData.displayName }));
+          setInfo(!info);
+        } catch (error) {
+          toast.error(`Failed to update name: ${error.message}`);
+        }
+      }
 
+      if (userData?.email && auth?.currentUser) {
+        try {
+          setIsPending(true);
+
+          await updateEmail(auth.currentUser, userData.email);
+          toast.success(`Email successfully changed. Please verify your new email.`);
+
+          await sendEmailVerification(auth.currentUser);
+          toast.success(`Verification email sent`);
+
+          dispatch(UpdateProfile({ ...user, email: userData.email }));
+          setEmailInfo(!emailInfo);
+        } catch (error) {
+          toast.error(`Error updating email or sending verification: ${error.message}`);
+        } finally {
+          setIsPending(false);
+        }
+      }
+    };
+
+    updateProfileInfo();
   }, [userData]);
 
   if (!user) {
@@ -82,11 +92,15 @@ function Profile() {
             {emailInfo ? (
               <FormInput name='email' placeholder2='Set new Email' type="email" required />
             ) : (
-              <p className="text-2xl mb-6">{user.email}</p>
+              <p className="text-2xl mb-6">{user.email ? user.email : `none`}</p>
             )}
             <div>
               {emailInfo ? (
-                <button type="submit" className="btn btn-secondary">Set email</button>
+                isPending ? (
+                  <button type="submit" disabled className="btn btn-secondary">Loading...</button>
+                ) : (
+                  <button type="submit" className="btn btn-secondary">Set email</button>
+                )
               ) : (
                 <button onClick={() => setEmailInfo(!emailInfo)} type="button" className="btn btn-accent">Change email</button>
               )}
@@ -99,3 +113,5 @@ function Profile() {
 }
 
 export default Profile;
+
+
